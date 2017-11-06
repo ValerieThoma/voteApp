@@ -6,6 +6,9 @@
 </head>
 <body>
  <% include navbar %>
+  <% if(name !== undefined){%>
+ 	<h1>Welcome, <%=name%></h1>
+ <%}%>
  	<div class='col-sm-12'>
  		Vote here!
  	</div>
