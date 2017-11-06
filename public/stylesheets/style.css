@@ -5,7 +5,7 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: grey;
   text-decoration: none;
 }
 ul li{
@@ -14,4 +14,8 @@ ul li{
 
 button{
 	margin: 5px;
+}
+img{
+	height: 200px;
+	width: 300px;
 }

@@ -11,14 +11,30 @@ connection.connect((error)=>{
 });
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-	if(req.session.name != undefined){
-		console.log(`Welcome, ${req.session.name}`);
+router.get('/', function(req, res, next){
+	if(req.session.name === undefined){
+		res.redirect('/login?msg=mustlogin')
+		return;
 	}
-  	res.render('index', {
-  		name: req.session.name
-  	  });
+	const getBands = new Promise((resolve,reject)=>{ ///promise requires resolve and reject
+		var selectQuery = `SELECT * FROM bands;`;
+		connection.query(selectQuery,(error, results, fields)=>{
+			if(error){
+				reject(error)
+			}else{
+				var rand = Math.floor(Math.random() * results.length);
+				resolve(results[rand]);
+			}
+				
+	  	});
+	})
 
+	getBands.then((bandObj)=>{
+		res.render('index', {
+  		name: req.session.name,
+  		band: bandObj
+	});  	
+});
 });
 
 router.get('/register',function(req, res, next){
@@ -67,13 +83,27 @@ router.post('/loginProcess',(req, res, next)=>{
 				var passwordsMatch = bcrypt.compareSync(password, results[0].password);
 				if (passwordsMatch){
 					req.session.name = results[0].name;
-					req.session.id = results[0].id;
+					req.session.uid = results[0].id;
 					req.session.email = results[0].email;
 					res.redirect('/');
 				}else{
 					res.redirect('/login?msg=badPass');
 				}
 			}
+		}
+	});
+});
+
+router.get('/vote/:direction/:bandId', (req,res)=>{
+	// res.json(req.params);
+	var bandId = req.params.bandId;
+	var direction = req.params.direction;
+	var insertVoteQuery = `INSERT INTO votes (imageID, voteDirection, userID) VALUES (?,?,?);`;
+	connection.query(insertVoteQuery,[bandId, direction,req.session.uid],(error, results)=>{
+		if (error){
+			throw error;
+		}else{
+			res.redirect('/');
 		}
 	});
 });
