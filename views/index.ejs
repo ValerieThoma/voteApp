@@ -6,6 +6,11 @@
 </head>
 <body>
  <% include navbar %>
+  <script>
+ 	$(document).ready()=>{
+ 		$('.reg-link, .login-link').hide();
+ 	}
+ </script>
   <% if(name !== undefined){%>
  	<h1>Welcome, <%=name%></h1>
  <% }%>

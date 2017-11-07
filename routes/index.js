@@ -17,12 +17,21 @@ router.get('/', function(req, res, next){
 		return;
 	}
 	const getBands = new Promise((resolve,reject)=>{ ///promise requires resolve and reject
-		var selectQuery = `SELECT * FROM bands;`;
-		connection.query(selectQuery,(error, results, fields)=>{
+		// var selectQuery = `SELECT * FROM bands;`;
+		var selectSpecificBands = `
+			SELECT * FROM bands WHERE id NOT IN(
+				SELECT imageID FROM votes WHERE userId = ?
+				);
+		`;
+		connection.query(selectSpecificBands,[req.session.uid],(error, results, fields)=>{
 			if(error){
 				reject(error)
 			}else{
-				var rand = Math.floor(Math.random() * results.length);
+				if(results.length == 0){
+					resolve("done");
+				}else{
+
+				}var rand = Math.floor(Math.random() * results.length);
 				resolve(results[rand]);
 			}
 				
@@ -30,11 +39,16 @@ router.get('/', function(req, res, next){
 	})
 
 	getBands.then((bandObj)=>{
-		res.render('index', {
-  		name: req.session.name,
-  		band: bandObj
-	});  	
-});
+		if(bandObj == "done"){
+			res.redirect('/standings?msg=finished');
+		}else{
+			res.render('index', {
+			name: req.session.name,
+			band: bandObj
+			// loggedIn: true
+			});  
+		}	
+	});
 });
 
 router.get('/register',function(req, res, next){
@@ -91,14 +105,19 @@ router.post('/loginProcess',(req, res, next)=>{
 				}
 			}
 		}
-	});
+	}); 
+});
+
+router.get('/logout', (req,res)=>{
+	req.session.destroy();
+	res.redirect('/login');
 });
 
 router.get('/vote/:direction/:bandId', (req,res)=>{
 	// res.json(req.params);
 	var bandId = req.params.bandId;
 	var direction = req.params.direction;
-	var insertVoteQuery = `INSERT INTO votes (imageID, voteDirection, userID) VALUES (?,?,?);`;
+	var insertVoteQuery = `INSERT INTO votes (imageID, voteDirection, userId) VALUES (?,?,?);`;
 	connection.query(insertVoteQuery,[bandId, direction,req.session.uid],(error, results)=>{
 		if (error){
 			throw error;
@@ -106,6 +125,24 @@ router.get('/vote/:direction/:bandId', (req,res)=>{
 			res.redirect('/');
 		}
 	});
+});
+
+router.get('/standings', (req,res)=>{
+	const standingsQuery = `
+		SELECT bands.title,bands.imageUrl,votes.imageID, SUM(IF(voteDirection='up',1,0)) as upVotes, SUM(IF(voteDirection='down',1,0)) as downVotes, SUM(IF(voteDirection='up',1,-1)) as total FROM votes
+    		INNER JOIN bands on votes.imageID = bands.id
+    		GROUP BY imageID;
+	`;
+	connection.query(standingsQuery, (error, results)=>{
+		if(error){
+			throw error;
+		}else{
+			res.render('standings',{
+				standingsResults: results
+			})
+		}
+	});
+
 });
 
 module.exports = router;
