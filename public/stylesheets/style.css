@@ -1,7 +1,14 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 
+}
+
+*{
+	font-family: 'Cabin Sketch', cursive;
+
+}
+h1{
+	font-family: 'Cabin Sketch', cursive;
 }
 
 a {
@@ -18,4 +25,19 @@ button{
 img{
 	height: 50%;
 	width: 50%;
+}
+form{
+	margin-top: 10px;
+	display: block;
+	padding: 10px;
+	box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .2); 
+}
+.inline{
+	display: inline-block;
+}
+.center{
+	text-align: center;
+}
+input{
+	display: inline-block !important;
 }

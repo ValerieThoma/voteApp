@@ -4,18 +4,20 @@
 	<title></title>
 	
 	<% include head %>
+	
+	
 
 </head>
 <body>
+	<%loggedIn = false%>
 	<% include navbar %>
-
 	<div class= "container">
 		<div class="row">
-			<div class="col-sm-12">
-				<h1>Login</h1>
+			<div class="col-sm-6 col-sm-offset-3">
+				<span class="center"><h1>Login</h1></span>
 				<form action="/loginProcess" method="post">
 					<div class="form-group">
-						<label for="email">Email Adress</label>
+						<label for="email">Email Adress:</label>
 						<input type="email" class="form-control" name="email">
 						<label for="password">Password:</label>
 						<input type="password" class="form-control" name="password">

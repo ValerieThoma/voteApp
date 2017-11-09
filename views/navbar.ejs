@@ -1,14 +1,21 @@
-
-<div class="col-sm-12">
-	<div id="navbar">
-		<div class="nav-link well">
-			<ul>
-				<li class="col-sm-2"><a href="#">Home</a></li>
-				<li class="reg-link col-sm-2"><a href="/register">Register</a></li>
-				<li class="login-link col-sm-2"><a href="/login">Login</a></li>
-				<li class="col-sm-2"><a href="/standings">Standings</a></li>
-				<li class="log-out-link col-sm-2"><a href="/register">Log Out</a></li>
-				<li class="col-sm-2"><a href="#">Call Russia</a></li>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">Rock or Not</a>
 		</div>
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="/">Home</a></li>
+
+		<!-- If the user is logged in, welcome them -->
+		<% if(loggedIn){%>
+			<li><a href="#">Welcome!</a></li>
+			<li class=""><a href="/logout">Logout</a></li>
+		<% }else{ %>
+		<!-- if the user isn't logged in, show teh register and login page -->
+			<li class="reg-link"><a href="/register">Register</a></li>
+			<li class="login-link"><a href="/login">Login</a></li>
+		<% } %>
+			<li><a href="/standings">Standings</a></li>
+		</ul>
 	</div>
-</div>
+</nav>

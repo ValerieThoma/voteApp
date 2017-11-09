@@ -6,18 +6,18 @@
 
 </head>
 <body>
-
+	<%loggedIn = false%>
 	<% include navbar %>
 
 	<div class= "container">
 		<div class="row">
-			<div class="col-sm-12">
-				<h1>Register</h1>
+			<div class="col-sm-6 col-sm-offset-3">
+				<span class="center"><h1>Register</h1></span>
 				<form action="/registerProcess" method="post">
 					<div class="form-group">
 						<label for="name">Name:</label>
 						<input type="text" class="form-control" name="name">
-						<label for="email">Email Adress</label>
+						<label for="email">Email Adress:</label>
 						<input type="email" class="form-control" name="email">
 						<label for="password">Password:</label>
 						<input type="password" class="form-control" name="password">

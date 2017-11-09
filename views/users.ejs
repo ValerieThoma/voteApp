@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<%include head%>
+</head>
+<body>
+
+	<%loggedIn = false%>
+	<%include navbar%>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<h1>My Profile</h1>
+				<form action="/userProcess" method="post">
+					<div class="form-group">
+						<label for="name">Name:</label>
+						<input type="text" value="<%=name%>" class="form-control" name="name">
+						<label for="email">Email Address:</label>
+						<input type="email" value="<%=email%>" class="form-control" name="email">
+						<label for="password">Password (leave blank to keep unchanged):</label>
+						<input type="password" value="" class="form-control" name="password">
+						<div class="checkbox">
+							<label><input type="checkbox" name="newsletter"> Sign me up for new votes!</label>
+						</div>
+						<button class="btn btn-primary">Register!</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
